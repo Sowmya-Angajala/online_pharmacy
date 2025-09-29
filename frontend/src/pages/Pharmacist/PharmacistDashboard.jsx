@@ -1,39 +1,43 @@
 // pages/Pharmacist/PharmacistDashboard.jsx
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { 
-  getPharmacistRequests, 
-  updatePrescriptionRequest 
-} from '../../store/slices/prescriptionSlice';
-import './PharmacistDashboard.css';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  getPharmacistRequests,
+  updatePrescriptionRequest,
+} from "../../store/slices/prescriptionSlice";
+import "./PharmacistDashboard.css";
 
 const PharmacistDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { requests, isLoading, error, success } = useSelector((state) => state.prescription);
+  const { requests, isLoading, error, success } = useSelector(
+    (state) => state.prescription
+  );
   const { user } = useSelector((state) => state.auth);
-  
+
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [responseData, setResponseData] = useState({
-    pharmacistNotes: '',
-    suggestedMedicines: [{ 
-      name: '', 
-      dosage: '', 
-      frequency: '', 
-      duration: '', 
-      instructions: '',
-      importantNotes: '' 
-    }]
+    pharmacistNotes: "",
+    suggestedMedicines: [
+      {
+        name: "",
+        dosage: "",
+        frequency: "",
+        duration: "",
+        instructions: "",
+        importantNotes: "",
+      },
+    ],
   });
   const [filters, setFilters] = useState({
-    status: 'all',
-    search: ''
+    status: "all",
+    search: "",
   });
 
   // Check if user is pharmacist
-  if (user?.role !== 'pharmacist') {
-    navigate('/');
+  if (user?.role !== "pharmacist") {
+    navigate("/");
     return null;
   }
 
@@ -53,14 +57,23 @@ const PharmacistDashboard = () => {
       ...responseData,
       suggestedMedicines: [
         ...responseData.suggestedMedicines,
-        { name: '', dosage: '', frequency: '', duration: '', instructions: '', importantNotes: '' }
-      ]
+        {
+          name: "",
+          dosage: "",
+          frequency: "",
+          duration: "",
+          instructions: "",
+          importantNotes: "",
+        },
+      ],
     });
   };
 
   const handleRemoveMedicine = (index) => {
     if (responseData.suggestedMedicines.length > 1) {
-      const newMedicines = responseData.suggestedMedicines.filter((_, i) => i !== index);
+      const newMedicines = responseData.suggestedMedicines.filter(
+        (_, i) => i !== index
+      );
       setResponseData({ ...responseData, suggestedMedicines: newMedicines });
     }
   };
@@ -73,68 +86,88 @@ const PharmacistDashboard = () => {
 
   const handleSubmitResponse = async () => {
     if (!responseData.pharmacistNotes.trim()) {
-      alert('Please provide pharmacist notes');
+      alert("Please provide pharmacist notes");
       return;
     }
 
     // Validate medicines
     for (let medicine of responseData.suggestedMedicines) {
-      if (!medicine.name.trim() || !medicine.dosage.trim() || 
-          !medicine.frequency.trim() || !medicine.duration.trim()) {
-        alert('Please fill all required medicine fields');
+      if (
+        !medicine.name.trim() ||
+        !medicine.dosage.trim() ||
+        !medicine.frequency.trim() ||
+        !medicine.duration.trim()
+      ) {
+        alert("Please fill all required medicine fields");
         return;
       }
     }
 
     try {
-      await dispatch(updatePrescriptionRequest({
-        requestId: selectedRequest._id,
-        data: responseData
-      })).unwrap();
-      
+      await dispatch(
+        updatePrescriptionRequest({
+          requestId: selectedRequest._id,
+          data: responseData,
+        })
+      ).unwrap();
+
       // Reset form
       setSelectedRequest(null);
       setResponseData({
-        pharmacistNotes: '',
-        suggestedMedicines: [{ name: '', dosage: '', frequency: '', duration: '', instructions: '', importantNotes: '' }]
+        pharmacistNotes: "",
+        suggestedMedicines: [
+          {
+            name: "",
+            dosage: "",
+            frequency: "",
+            duration: "",
+            instructions: "",
+            importantNotes: "",
+          },
+        ],
       });
-      
     } catch (error) {
-      console.error('Error submitting response:', error);
+      console.error("Error submitting response:", error);
     }
   };
 
-  const filteredRequests = requests.filter(request => {
-    const matchesStatus = filters.status === 'all' || request.status === filters.status;
-    const matchesSearch = request.patient?.name?.toLowerCase().includes(filters.search.toLowerCase()) ||
-                         request.symptoms.toLowerCase().includes(filters.search.toLowerCase());
+  const filteredRequests = requests.filter((request) => {
+    const matchesStatus =
+      filters.status === "all" || request.status === filters.status;
+    const matchesSearch =
+      request.patient?.name
+        ?.toLowerCase()
+        .includes(filters.search.toLowerCase()) ||
+      request.symptoms.toLowerCase().includes(filters.search.toLowerCase());
     return matchesStatus && matchesSearch;
   });
 
   const stats = {
     total: requests.length,
-    pending: requests.filter(r => r.status === 'pending').length,
-    in_review: requests.filter(r => r.status === 'in_review').length,
-    completed: requests.filter(r => r.status === 'completed').length
+    pending: requests.filter((r) => r.status === "pending").length,
+    in_review: requests.filter((r) => r.status === "in_review").length,
+    completed: requests.filter((r) => r.status === "completed").length,
   };
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      pending: { class: 'status-pending', label: '⏳ Pending' },
-      in_review: { class: 'status-review', label: '🔍 In Review' },
-      completed: { class: 'status-completed', label: '✅ Completed' }
+      pending: { class: "status-pending", label: "⏳ Pending" },
+      in_review: { class: "status-review", label: "🔍 In Review" },
+      completed: { class: "status-completed", label: "✅ Completed" },
     };
-    
+
     const config = statusConfig[status] || statusConfig.pending;
-    return <span className={`status-badge ${config.class}`}>{config.label}</span>;
+    return (
+      <span className={`status-badge ${config.class}`}>{config.label}</span>
+    );
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -157,11 +190,7 @@ const PharmacistDashboard = () => {
           <p>Review patient requests and provide medication recommendations</p>
         </div>
 
-        {error && (
-          <div className="error-alert">
-            Error: {error.message}
-          </div>
-        )}
+        {error && <div className="error-alert">Error: {error.message}</div>}
 
         {success && (
           <div className="success-alert">
@@ -193,9 +222,11 @@ const PharmacistDashboard = () => {
         <div className="filters-section">
           <div className="filter-group">
             <label>Status Filter:</label>
-            <select 
+            <select
               value={filters.status}
-              onChange={(e) => setFilters({...filters, status: e.target.value})}
+              onChange={(e) =>
+                setFilters({ ...filters, status: e.target.value })
+              }
             >
               <option value="all">All Requests</option>
               <option value="pending">Pending</option>
@@ -209,7 +240,9 @@ const PharmacistDashboard = () => {
               type="text"
               placeholder="Search by patient name or symptoms..."
               value={filters.search}
-              onChange={(e) => setFilters({...filters, search: e.target.value})}
+              onChange={(e) =>
+                setFilters({ ...filters, search: e.target.value })
+              }
             />
           </div>
         </div>
@@ -219,37 +252,60 @@ const PharmacistDashboard = () => {
           <div className="requests-panel">
             <h3>Requests ({filteredRequests.length})</h3>
             <div className="requests-list">
-              {filteredRequests.map(request => (
-                <div 
+              {filteredRequests.map((request) => (
+                <div
                   key={request._id}
-                  className={`request-item ${selectedRequest?._id === request._id ? 'active' : ''} ${
-                    request.status === 'pending' ? 'urgent' : ''
-                  }`}
+                  className={`request-item ${
+                    selectedRequest?._id === request._id ? "active" : ""
+                  } ${request.status === "pending" ? "urgent" : ""}`}
                   onClick={() => {
                     setSelectedRequest(request);
-                    if (request.status === 'completed') {
+                    if (request.status === "completed") {
                       setResponseData({
-                        pharmacistNotes: request.pharmacistNotes || '',
-                        suggestedMedicines: request.suggestedMedicines.length > 0 
-                          ? request.suggestedMedicines 
-                          : [{ name: '', dosage: '', frequency: '', duration: '', instructions: '', importantNotes: '' }]
+                        pharmacistNotes: request.pharmacistNotes || "",
+                        suggestedMedicines:
+                          request.suggestedMedicines.length > 0
+                            ? request.suggestedMedicines
+                            : [
+                                {
+                                  name: "",
+                                  dosage: "",
+                                  frequency: "",
+                                  duration: "",
+                                  instructions: "",
+                                  importantNotes: "",
+                                },
+                              ],
                       });
                     } else {
                       setResponseData({
-                        pharmacistNotes: '',
-                        suggestedMedicines: [{ name: '', dosage: '', frequency: '', duration: '', instructions: '', importantNotes: '' }]
+                        pharmacistNotes: "",
+                        suggestedMedicines: [
+                          {
+                            name: "",
+                            dosage: "",
+                            frequency: "",
+                            duration: "",
+                            instructions: "",
+                            importantNotes: "",
+                          },
+                        ],
                       });
                     }
                   }}
                 >
                   <div className="request-item-header">
-                    <strong>{request.patient?.name || 'Unknown Patient'}</strong>
+                    <strong>
+                      {request.patient?.name || "Unknown Patient"}
+                    </strong>
                     {getStatusBadge(request.status)}
                   </div>
-                  <p className="symptoms-preview">{request.symptoms.substring(0, 100)}...</p>
+                  <p className="symptoms-preview">
+                    {request.symptoms.substring(0, 100)}...
+                  </p>
                   <div className="request-meta">
                     <span>Submitted: {formatDate(request.createdAt)}</span>
-                    {request.status === 'pending' && (
+                    {request.status === "pending" && (
                       <span className="urgent-badge">⚠️ Needs Attention</span>
                     )}
                   </div>
@@ -270,7 +326,7 @@ const PharmacistDashboard = () => {
               <div className="response-form">
                 <div className="response-header">
                   <h3>Response to {selectedRequest.patient?.name}'s Request</h3>
-                  {selectedRequest.status === 'completed' && (
+                  {selectedRequest.status === "completed" && (
                     <span className="completed-label">Already Responded</span>
                   )}
                 </div>
@@ -281,15 +337,15 @@ const PharmacistDashboard = () => {
                   <div className="info-grid">
                     <div>
                       <label>Name:</label>
-                      <span>{selectedRequest.patient?.name || 'N/A'}</span>
+                      <span>{selectedRequest.patient?.name || "N/A"}</span>
                     </div>
                     <div>
                       <label>Email:</label>
-                      <span>{selectedRequest.patient?.email || 'N/A'}</span>
+                      <span>{selectedRequest.patient?.email || "N/A"}</span>
                     </div>
                     <div>
                       <label>Phone:</label>
-                      <span>{selectedRequest.patient?.phone || 'N/A'}</span>
+                      <span>{selectedRequest.patient?.phone || "N/A"}</span>
                     </div>
                   </div>
                 </div>
@@ -308,10 +364,15 @@ const PharmacistDashboard = () => {
                       <div className="images-grid">
                         {selectedRequest.images.map((image, index) => (
                           <div key={index} className="image-item">
-                            <img 
-                              src={`http://localhost:5000${image}`} 
+                            <img
+                              src={`https://online-pharmacy-1.onrender.com${image}`}
                               alt={`Prescription ${index + 1}`}
-                              onClick={() => window.open(`http://localhost:5000${image}`, '_blank')}
+                              onClick={() =>
+                                window.open(
+                                  `https://online-pharmacy-1.onrender.com${image}`,
+                                  "_blank"
+                                )
+                              }
                             />
                           </div>
                         ))}
@@ -321,13 +382,18 @@ const PharmacistDashboard = () => {
                 </div>
 
                 {/* Response Form */}
-                {selectedRequest.status !== 'completed' && (
+                {selectedRequest.status !== "completed" && (
                   <>
                     <div className="form-group">
                       <label>Pharmacist Notes *</label>
                       <textarea
                         value={responseData.pharmacistNotes}
-                        onChange={(e) => setResponseData({...responseData, pharmacistNotes: e.target.value})}
+                        onChange={(e) =>
+                          setResponseData({
+                            ...responseData,
+                            pharmacistNotes: e.target.value,
+                          })
+                        }
                         placeholder="Provide your professional assessment, advice, and any important notes for the patient..."
                         rows="6"
                         required
@@ -336,68 +402,106 @@ const PharmacistDashboard = () => {
 
                     <div className="medicines-section">
                       <label>Suggested Medicines *</label>
-                      {responseData.suggestedMedicines.map((medicine, index) => (
-                        <div key={index} className="medicine-form">
-                          <div className="medicine-form-header">
-                            <h5>Medicine #{index + 1}</h5>
-                            {responseData.suggestedMedicines.length > 1 && (
-                              <button 
-                                type="button"
-                                onClick={() => handleRemoveMedicine(index)}
-                                className="remove-medicine-btn"
-                              >
-                                Remove
-                              </button>
-                            )}
+                      {responseData.suggestedMedicines.map(
+                        (medicine, index) => (
+                          <div key={index} className="medicine-form">
+                            <div className="medicine-form-header">
+                              <h5>Medicine #{index + 1}</h5>
+                              {responseData.suggestedMedicines.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveMedicine(index)}
+                                  className="remove-medicine-btn"
+                                >
+                                  Remove
+                                </button>
+                              )}
+                            </div>
+
+                            <div className="medicine-fields">
+                              <input
+                                type="text"
+                                placeholder="Medicine Name *"
+                                value={medicine.name}
+                                onChange={(e) =>
+                                  handleMedicineChange(
+                                    index,
+                                    "name",
+                                    e.target.value
+                                  )
+                                }
+                                required
+                              />
+                              <input
+                                type="text"
+                                placeholder="Dosage (e.g., 500mg) *"
+                                value={medicine.dosage}
+                                onChange={(e) =>
+                                  handleMedicineChange(
+                                    index,
+                                    "dosage",
+                                    e.target.value
+                                  )
+                                }
+                                required
+                              />
+                              <input
+                                type="text"
+                                placeholder="Frequency (e.g., Twice daily) *"
+                                value={medicine.frequency}
+                                onChange={(e) =>
+                                  handleMedicineChange(
+                                    index,
+                                    "frequency",
+                                    e.target.value
+                                  )
+                                }
+                                required
+                              />
+                              <input
+                                type="text"
+                                placeholder="Duration (e.g., 5 days) *"
+                                value={medicine.duration}
+                                onChange={(e) =>
+                                  handleMedicineChange(
+                                    index,
+                                    "duration",
+                                    e.target.value
+                                  )
+                                }
+                                required
+                              />
+                              <input
+                                type="text"
+                                placeholder="Special Instructions"
+                                value={medicine.instructions}
+                                onChange={(e) =>
+                                  handleMedicineChange(
+                                    index,
+                                    "instructions",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                              <input
+                                type="text"
+                                placeholder="Important Notes/Warnings"
+                                value={medicine.importantNotes}
+                                onChange={(e) =>
+                                  handleMedicineChange(
+                                    index,
+                                    "importantNotes",
+                                    e.target.value
+                                  )
+                                }
+                              />
+                            </div>
                           </div>
-                          
-                          <div className="medicine-fields">
-                            <input
-                              type="text"
-                              placeholder="Medicine Name *"
-                              value={medicine.name}
-                              onChange={(e) => handleMedicineChange(index, 'name', e.target.value)}
-                              required
-                            />
-                            <input
-                              type="text"
-                              placeholder="Dosage (e.g., 500mg) *"
-                              value={medicine.dosage}
-                              onChange={(e) => handleMedicineChange(index, 'dosage', e.target.value)}
-                              required
-                            />
-                            <input
-                              type="text"
-                              placeholder="Frequency (e.g., Twice daily) *"
-                              value={medicine.frequency}
-                              onChange={(e) => handleMedicineChange(index, 'frequency', e.target.value)}
-                              required
-                            />
-                            <input
-                              type="text"
-                              placeholder="Duration (e.g., 5 days) *"
-                              value={medicine.duration}
-                              onChange={(e) => handleMedicineChange(index, 'duration', e.target.value)}
-                              required
-                            />
-                            <input
-                              type="text"
-                              placeholder="Special Instructions"
-                              value={medicine.instructions}
-                              onChange={(e) => handleMedicineChange(index, 'instructions', e.target.value)}
-                            />
-                            <input
-                              type="text"
-                              placeholder="Important Notes/Warnings"
-                              value={medicine.importantNotes}
-                              onChange={(e) => handleMedicineChange(index, 'importantNotes', e.target.value)}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                      
-                      <button 
-                        type="button" 
+                        )
+                      )}
+
+                      <button
+                        type="button"
                         onClick={handleAddMedicine}
                         className="add-medicine-btn"
                       >
@@ -406,35 +510,49 @@ const PharmacistDashboard = () => {
                     </div>
 
                     <div className="form-actions">
-                      <button 
+                      <button
                         onClick={handleSubmitResponse}
                         disabled={isLoading}
                         className="submit-response-btn"
                       >
-                        {isLoading ? 'Submitting...' : 'Submit Response'}
+                        {isLoading ? "Submitting..." : "Submit Response"}
                       </button>
                     </div>
                   </>
                 )}
 
-                {selectedRequest.status === 'completed' && (
+                {selectedRequest.status === "completed" && (
                   <div className="existing-response">
                     <h4>Your Previous Response</h4>
-                    <p><strong>Notes:</strong> {selectedRequest.pharmacistNotes}</p>
-                    
+                    <p>
+                      <strong>Notes:</strong> {selectedRequest.pharmacistNotes}
+                    </p>
+
                     {selectedRequest.suggestedMedicines.length > 0 && (
                       <div>
                         <strong>Medicines Suggested:</strong>
-                        {selectedRequest.suggestedMedicines.map((medicine, index) => (
-                          <div key={index} className="medicine-review">
-                            <p><strong>{medicine.name}</strong> - {medicine.dosage}</p>
-                            <p>Frequency: {medicine.frequency} | Duration: {medicine.duration}</p>
-                            {medicine.instructions && <p>Instructions: {medicine.instructions}</p>}
-                            {medicine.importantNotes && (
-                              <p className="important">Important: {medicine.importantNotes}</p>
-                            )}
-                          </div>
-                        ))}
+                        {selectedRequest.suggestedMedicines.map(
+                          (medicine, index) => (
+                            <div key={index} className="medicine-review">
+                              <p>
+                                <strong>{medicine.name}</strong> -{" "}
+                                {medicine.dosage}
+                              </p>
+                              <p>
+                                Frequency: {medicine.frequency} | Duration:{" "}
+                                {medicine.duration}
+                              </p>
+                              {medicine.instructions && (
+                                <p>Instructions: {medicine.instructions}</p>
+                              )}
+                              {medicine.importantNotes && (
+                                <p className="important">
+                                  Important: {medicine.importantNotes}
+                                </p>
+                              )}
+                            </div>
+                          )
+                        )}
                       </div>
                     )}
                   </div>
@@ -444,7 +562,10 @@ const PharmacistDashboard = () => {
               <div className="no-selection">
                 <div className="no-selection-icon">👨‍⚕️</div>
                 <h3>Select a Request</h3>
-                <p>Choose a patient request from the list to view details and provide a response</p>
+                <p>
+                  Choose a patient request from the list to view details and
+                  provide a response
+                </p>
               </div>
             )}
           </div>

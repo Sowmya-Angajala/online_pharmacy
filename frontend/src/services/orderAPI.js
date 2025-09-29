@@ -1,7 +1,7 @@
 // services/orderAPI.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/orders";
+const API_URL = "https://online-pharmacy-1.onrender.com/api/orders";
 
 const api = axios.create({
   baseURL: API_URL,

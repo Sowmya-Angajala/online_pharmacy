@@ -369,11 +369,55 @@
 }
 
 .medicines-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
   gap: 1.25rem;
 }
 
+.medicine-card {
+  background: white;
+  border: 1px solid #e8ecef;
+  border-radius: 8px;   /* slightly less rounded */
+  padding: 0.9rem;      /* reduced padding */
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-size: 0.9rem;    /* overall smaller text */
+}
+
+.medicine-image {
+  text-align: center;
+  margin-bottom: 0.15rem; /* reduced spacing */
+}
+
+.image-placeholder {
+  font-size: 2rem;       /* smaller icon */
+  padding: 1rem;         /* reduced padding */
+  width: 65px;
+  height: 65px;
+}
+
+.medicine-info h3 {
+  font-size: 0.9rem;     /* smaller title */
+}
+
+.medicine-brand {
+  font-size: 0.8rem;     /* reduced */
+}
+
+.medicine-category {
+  font-size: 0.7rem;     /* reduced */
+  margin-bottom: 0.75rem;
+}
+
+.medicine-price {
+  font-size: 1rem;       /* reduced */
+}
+
+.add-to-cart-btn {
+  padding: 0.6rem;       /* smaller button */
+  font-size: 0.85rem;
+}
 .medicine-card {
   background: white;
   border: 1px solid #e8ecef;
@@ -381,6 +425,11 @@
   padding: 1.25rem;
   transition: all 0.3s ease;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap:10px;
+  
   overflow: hidden;
 }
 

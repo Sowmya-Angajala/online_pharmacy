@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:5000/api/prescription'; // Adjust if your backend runs on different port
+const API_URL = "https://online-pharmacy-1.onrender.com/api/prescription"; // Adjust if your backend runs on different port
 
 // Create axios instance with default config
 const api = axios.create({
@@ -11,7 +11,7 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -30,28 +30,30 @@ api.interceptors.response.use(
   (error) => {
     if (error.response) {
       // Server responded with error status
-      console.error('API Error:', error.response.data);
-      
+      console.error("API Error:", error.response.data);
+
       // Handle specific HTTP status codes
       if (error.response.status === 401) {
         // Token expired or invalid
-        localStorage.removeItem('token');
-        window.location.href = '/login';
+        localStorage.removeItem("token");
+        window.location.href = "/login";
       } else if (error.response.status === 403) {
         // Access denied
-        console.error('Access denied: You do not have permission for this action');
+        console.error(
+          "Access denied: You do not have permission for this action"
+        );
       } else if (error.response.status === 500) {
         // Server error
-        console.error('Server error: Please try again later');
+        console.error("Server error: Please try again later");
       }
     } else if (error.request) {
       // Request made but no response received
-      console.error('Network error: Please check your connection');
+      console.error("Network error: Please check your connection");
     } else {
       // Something else happened
-      console.error('Error:', error.message);
+      console.error("Error:", error.message);
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -62,9 +64,9 @@ const prescriptionAPI = {
    * @param {FormData} formData - Form data with symptoms, description, and images
    */
   createRequest: (formData) => {
-    return api.post('/requests', formData, {
+    return api.post("/requests", formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
       timeout: 30000, // 30 seconds for file uploads
     });
@@ -74,7 +76,7 @@ const prescriptionAPI = {
    * Get all prescription requests for the logged-in patient
    */
   getPatientRequests: () => {
-    return api.get('/patient/requests');
+    return api.get("/patient/requests");
   },
 
   /**
@@ -83,15 +85,17 @@ const prescriptionAPI = {
    */
   getPharmacistRequests: (queryParams = {}) => {
     const params = new URLSearchParams();
-    
-    if (queryParams.status) params.append('status', queryParams.status);
-    if (queryParams.page) params.append('page', queryParams.page);
-    if (queryParams.limit) params.append('limit', queryParams.limit);
-    if (queryParams.search) params.append('search', queryParams.search);
-    
+
+    if (queryParams.status) params.append("status", queryParams.status);
+    if (queryParams.page) params.append("page", queryParams.page);
+    if (queryParams.limit) params.append("limit", queryParams.limit);
+    if (queryParams.search) params.append("search", queryParams.search);
+
     const queryString = params.toString();
-    const url = queryString ? `/pharmacist/requests?${queryString}` : '/pharmacist/requests';
-    
+    const url = queryString
+      ? `/pharmacist/requests?${queryString}`
+      : "/pharmacist/requests";
+
     return api.get(url);
   },
 
@@ -134,9 +138,9 @@ const prescriptionAPI = {
    * @param {FormData} formData - Form data containing images
    */
   uploadImages: (formData) => {
-    return api.post('/upload/images', formData, {
+    return api.post("/upload/images", formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     });
   },
@@ -145,8 +149,8 @@ const prescriptionAPI = {
    * Get statistics for pharmacist dashboard
    */
   getDashboardStats: () => {
-    return api.get('/pharmacist/stats');
-  }
+    return api.get("/pharmacist/stats");
+  },
 };
 
 // Utility functions for API
@@ -157,19 +161,19 @@ export const APIUtils = {
   handleError: (error) => {
     if (error.response) {
       return {
-        message: error.response.data.message || 'An error occurred',
+        message: error.response.data.message || "An error occurred",
         status: error.response.status,
-        data: error.response.data
+        data: error.response.data,
       };
     } else if (error.request) {
       return {
-        message: 'Network error: Unable to connect to server',
-        status: 0
+        message: "Network error: Unable to connect to server",
+        status: 0,
       };
     } else {
       return {
-        message: error.message || 'An unexpected error occurred',
-        status: -1
+        message: error.message || "An unexpected error occurred",
+        status: -1,
       };
     }
   },
@@ -178,20 +182,20 @@ export const APIUtils = {
    * Check if user has required role for API call
    */
   checkRole: (requiredRole, userRole) => {
-    return userRole === requiredRole || userRole === 'admin';
+    return userRole === requiredRole || userRole === "admin";
   },
 
   /**
    * Format medicine data for API submission
    */
   formatMedicineData: (medicines) => {
-    return medicines.map(medicine => ({
+    return medicines.map((medicine) => ({
       name: medicine.name.trim(),
       dosage: medicine.dosage.trim(),
       frequency: medicine.frequency.trim(),
       duration: medicine.duration.trim(),
-      instructions: medicine.instructions?.trim() || '',
-      importantNotes: medicine.importantNotes?.trim() || ''
+      instructions: medicine.instructions?.trim() || "",
+      importantNotes: medicine.importantNotes?.trim() || "",
     }));
   },
 
@@ -202,15 +206,15 @@ export const APIUtils = {
     const errors = [];
 
     if (!data.symptoms || data.symptoms.trim().length < 10) {
-      errors.push('Symptoms must be at least 10 characters long');
+      errors.push("Symptoms must be at least 10 characters long");
     }
 
     if (!data.description || data.description.trim().length < 20) {
-      errors.push('Description must be at least 20 characters long');
+      errors.push("Description must be at least 20 characters long");
     }
 
     if (data.images && data.images.length > 5) {
-      errors.push('Maximum 5 images allowed');
+      errors.push("Maximum 5 images allowed");
     }
 
     return errors;
@@ -223,11 +227,11 @@ export const APIUtils = {
     const errors = [];
 
     if (!data.pharmacistNotes || data.pharmacistNotes.trim().length < 10) {
-      errors.push('Pharmacist notes must be at least 10 characters long');
+      errors.push("Pharmacist notes must be at least 10 characters long");
     }
 
     if (!data.suggestedMedicines || data.suggestedMedicines.length === 0) {
-      errors.push('At least one medicine suggestion is required');
+      errors.push("At least one medicine suggestion is required");
     } else {
       data.suggestedMedicines.forEach((medicine, index) => {
         if (!medicine.name.trim()) {
@@ -246,7 +250,7 @@ export const APIUtils = {
     }
 
     return errors;
-  }
+  },
 };
 
 // Export both default and named exports
