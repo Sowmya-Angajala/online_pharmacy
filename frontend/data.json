@@ -1,0 +1,228 @@
+  [
+    {
+      
+      "name": "Paracetamol",
+      "usage": "Used to reduce fever and relieve mild to moderate pain.",
+      "price": 25.0,
+      "currency": "INR",
+      "dosage": "500mg - Take 1 tablet every 6 hours if needed (not more than 4 per day).",
+      "manufacturer": "ABC Pharma Ltd.",
+      "expiry_date": "2026-05-12",
+      "side_effects": ["Nausea", "Allergic reactions (rare)", "Liver damage (overdose)"],
+      "category": "Analgesic / Antipyretic"
+    },
+    {
+     
+      "name": "Amoxicillin",
+      "usage": "Antibiotic used to treat bacterial infections like ear, nose, throat, urinary tract, and skin infections.",
+      "price": 120.0,
+      "currency": "INR",
+      "dosage": "250mg - 500mg every 8 hours (as prescribed by doctor).",
+      "manufacturer": "MediCure Pharmaceuticals",
+      "expiry_date": "2025-11-20",
+      "side_effects": ["Diarrhea", "Nausea", "Skin rash"],
+      "category": "Antibiotic"
+    },
+    {
+     
+      "name": "Cetirizine",
+      "usage": "Relieves allergy symptoms like runny nose, sneezing, itchy eyes, and skin reactions.",
+      "price": 45.0,
+      "currency": "INR",
+      "dosage": "10mg once daily.",
+      "manufacturer": "HealthWell Drugs",
+      "expiry_date": "2027-02-15",
+      "side_effects": ["Drowsiness", "Dry mouth", "Fatigue"],
+      "category": "Antihistamine"
+    },
+    {
+     
+      "name": "Omeprazole",
+      "usage": "Used to treat acid reflux, heartburn, and stomach ulcers.",
+      "price": 90.0,
+      "currency": "INR",
+      "dosage": "20mg once daily before meals.",
+      "manufacturer": "Zenith Medicos",
+      "expiry_date": "2026-09-10",
+      "side_effects": ["Headache", "Stomach pain", "Constipation"],
+      "category": "Proton Pump Inhibitor"
+    },
+    {
+     
+      "name": "Metformin",
+      "usage": "Used to control high blood sugar in type 2 diabetes patients.",
+      "price": 65.0,
+      "currency": "INR",
+      "dosage": "500mg twice daily with meals.",
+      "manufacturer": "Glucare Pharma",
+      "expiry_date": "2025-07-18",
+      "side_effects": ["Nausea", "Diarrhea", "Abdominal pain"],
+      "category": "Antidiabetic"
+    },
+    {
+      
+      "name": "Ibuprofen",
+      "usage": "Reduces pain, inflammation, and fever.",
+      "price": 40.0,
+      "currency": "INR",
+      "dosage": "400mg every 6-8 hours with food.",
+      "manufacturer": "CureWell Pharma",
+      "expiry_date": "2026-03-20",
+      "side_effects": ["Stomach upset", "Heartburn", "Dizziness"],
+      "category": "NSAID"
+    },
+    {
+      "name": "Aspirin",
+      "usage": "Used for pain relief, reducing inflammation, and preventing blood clots.",
+      "price": 30.0,
+      "currency": "INR",
+      "dosage": "75-325mg daily (as prescribed).",
+      "manufacturer": "HealFast Ltd.",
+      "expiry_date": "2027-08-11",
+      "side_effects": ["Stomach bleeding", "Nausea", "Allergic reactions"],
+      "category": "NSAID / Antiplatelet"
+    },
+    {
+      "name": "Losartan",
+      "usage": "Used to treat high blood pressure and protect kidneys in diabetic patients.",
+      "price": 85.0,
+      "currency": "INR",
+      "dosage": "50mg once daily.",
+      "manufacturer": "CardioCare Pharma",
+      "expiry_date": "2025-12-30",
+      "side_effects": ["Dizziness", "Fatigue", "Low blood pressure"],
+      "category": "Antihypertensive"
+    },
+    {
+      "name": "Atorvastatin",
+      "usage": "Used to lower cholesterol and triglycerides in the blood.",
+      "price": 110.0,
+      "currency": "INR",
+      "dosage": "10-20mg once daily.",
+      "manufacturer": "LipidCare Pharmaceuticals",
+      "expiry_date": "2026-06-09",
+      "side_effects": ["Muscle pain", "Liver enzyme changes", "Indigestion"],
+      "category": "Statin"
+    },
+    {
+      "name": "Azithromycin",
+      "usage": "Antibiotic used for respiratory infections, skin infections, and STDs.",
+      "price": 150.0,
+      "currency": "INR",
+      "dosage": "500mg once daily for 3 days.",
+      "manufacturer": "BioMed Pharma",
+      "expiry_date": "2026-01-22",
+      "side_effects": ["Diarrhea", "Nausea", "Abdominal pain"],
+      "category": "Antibiotic"
+    },
+    {
+      "name": "Diclofenac",
+      "usage": "Reduces inflammation and pain in arthritis, migraines, and injuries.",
+      "price": 55.0,
+      "currency": "INR",
+      "dosage": "50mg twice daily with food.",
+      "manufacturer": "PainRelief Ltd.",
+      "expiry_date": "2027-10-17",
+      "side_effects": ["Stomach upset", "Heartburn", "Drowsiness"],
+      "category": "NSAID"
+    },
+    {
+      "name": "Ranitidine",
+      "usage": "Used to treat ulcers and acid reflux by reducing stomach acid.",
+      "price": 60.0,
+      "currency": "INR",
+      "dosage": "150mg twice daily.",
+      "manufacturer": "AcidCare Pharma",
+      "expiry_date": "2025-04-05",
+      "side_effects": ["Headache", "Dizziness", "Constipation"],
+      "category": "H2 Receptor Blocker"
+    },
+    {
+      "name": "Levothyroxine",
+      "usage": "Used to treat hypothyroidism by replacing thyroid hormones.",
+      "price": 70.0,
+      "currency": "INR",
+      "dosage": "50mcg once daily (empty stomach).",
+      "manufacturer": "ThyroMed",
+      "expiry_date": "2026-08-28",
+      "side_effects": ["Weight loss", "Anxiety", "Sweating"],
+      "category": "Hormone Replacement"
+    },
+    {
+      "name": "Salbutamol",
+      "usage": "Relieves asthma and chronic obstructive pulmonary disease (COPD).",
+      "price": 95.0,
+      "currency": "INR",
+      "dosage": "100-200mcg inhaled as needed (max 4 times/day).",
+      "manufacturer": "BreatheEasy Pharma",
+      "expiry_date": "2025-09-13",
+      "side_effects": ["Tremors", "Fast heartbeat", "Headache"],
+      "category": "Bronchodilator"
+    },
+    {
+      "name": "Insulin Glargine",
+      "usage": "Used for long-term control of blood sugar in diabetes.",
+      "price": 450.0,
+      "currency": "INR",
+      "dosage": "10 units subcutaneously once daily (doctor prescribed).",
+      "manufacturer": "DiabeCare Ltd.",
+      "expiry_date": "2026-11-19",
+      "side_effects": ["Low blood sugar", "Injection site reactions", "Weight gain"],
+      "category": "Insulin"
+    },
+    {
+      "name": "Clopidogrel",
+      "usage": "Used to prevent strokes and heart attacks by preventing blood clots.",
+      "price": 130.0,
+      "currency": "INR",
+      "dosage": "75mg once daily.",
+      "manufacturer": "CardioTrust Pharma",
+      "expiry_date": "2026-02-08",
+      "side_effects": ["Bleeding", "Bruising", "Stomach upset"],
+      "category": "Antiplatelet"
+    },
+    {
+      "name": "Montelukast",
+      "usage": "Used for asthma maintenance and seasonal allergy relief.",
+      "price": 140.0,
+      "currency": "INR",
+      "dosage": "10mg once daily in the evening.",
+      "manufacturer": "AllerRelief Pharma",
+      "expiry_date": "2027-01-29",
+      "side_effects": ["Headache", "Abdominal pain", "Mood changes"],
+      "category": "Leukotriene Inhibitor"
+    },
+    {
+      "name": "Hydroxychloroquine",
+      "usage": "Used to treat malaria, rheumatoid arthritis, and lupus.",
+      "price": 200.0,
+      "currency": "INR",
+      "dosage": "200-400mg daily (doctor prescribed).",
+      "manufacturer": "MediLife Ltd.",
+      "expiry_date": "2026-04-21",
+      "side_effects": ["Vision problems", "Nausea", "Skin rashes"],
+      "category": "Antimalarial / Immunosuppressant"
+    },
+    {
+      "name": "Pantoprazole",
+      "usage": "Used for GERD, stomach ulcers, and acid reflux.",
+      "price": 85.0,
+      "currency": "INR",
+      "dosage": "40mg once daily before food.",
+      "manufacturer": "StomachCare Pharma",
+      "expiry_date": "2027-05-14",
+      "side_effects": ["Diarrhea", "Abdominal pain", "Headache"],
+      "category": "Proton Pump Inhibitor"
+    },
+    {
+      "name": "Doxycycline",
+      "usage": "Antibiotic used for acne, respiratory infections, and malaria prevention.",
+      "price": 160.0,
+      "currency": "INR",
+      "dosage": "100mg once or twice daily.",
+      "manufacturer": "Antibio Pharma",
+      "expiry_date": "2025-10-06",
+      "side_effects": ["Sun sensitivity", "Nausea", "Diarrhea"],
+      "category": "Antibiotic"
+    }
+  ]
