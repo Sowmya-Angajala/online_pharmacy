@@ -1,6 +1,6 @@
 // store/slices/orderSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import orderAPI from '../../services/orderApi';
+import orderAPI from '../../services/orderAPI'
 
 // Async thunks
 export const createOrder = createAsyncThunk(
